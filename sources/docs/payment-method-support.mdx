@@ -1,0 +1,49 @@
+---
+title: Payment Rail, Chain, & Token Support
+sidebarTitle: Rail, Chain, & Token Support
+public: true
+---
+
+import { SupportedChainsTable } from '/snippets/SupportedChainsTable.jsx';
+import { SupportedTokensTable } from '/snippets/SupportedTokensTable.jsx';
+
+## Fiat on and offramps
+
+Halliday supports fiat-to-crypto onramps and offramps worldwide.
+
+Available payment rails depend on the payment providers Halliday integrates with, and each provider supports a different set of rails and regions.
+
+As a result, not every rail is available in every location. In non-sanctioned regions, Halliday's supported fiat onramps generally include:
+
+- Debit card
+- Credit card
+- Bank ACH deposit
+- Apple Pay
+- Google Pay
+- PayPal
+- Venmo
+- Coinbase
+
+For more detailed regional support, reach out to partnerships@halliday.xyz or click the **Book a Sales Call** button above.
+
+## Crypto Assets
+
+Halliday supports crypto assets as input and output for payments. Supported crypto assets can be found by querying the `/assets` [endpoint of the API](/api-reference/assets/get-asset-details).
+
+Get an API key for free in the [Halliday Dashboard](https://dashboard.halliday.xyz/).
+
+Specific payment [route support from input asset to output asset](https://docs.halliday.xyz/api-reference/assets/get-available-input-assets-for-a-given-output-asset) can also be checked using the API.
+
+Reach out to the team directly at partnerships@halliday.xyz to request additional support for fiat currencies, tokens, or chains.
+
+## Supported Chains
+
+The following blockchains are supported by Halliday:
+
+<SupportedChainsTable />
+
+## Supported Tokens
+
+All supported tokens are available as a destination token for fiat onramps and swaps.
+
+<SupportedTokensTable />

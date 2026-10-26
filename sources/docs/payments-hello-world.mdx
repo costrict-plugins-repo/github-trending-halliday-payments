@@ -1,0 +1,160 @@
+---
+title: SDK Widget Hello World
+sidebarTitle: Hello World
+public: true
+---
+The fastest way to implement Halliday is by utilizing the JS SDK widget user interface.
+
+## Try the Halliday JS SDK Widget
+
+Following this guide, or the [JS SDK Widget Documentation](/pages/payments-sdk-docs) guide will result in an onramp experience like in the following demo.
+
+import { OpenHallidayDemoPage } from '/snippets/OpenHallidayDemoPage.jsx';
+
+<OpenHallidayDemoPage />
+
+### Integrate Halliday
+
+Follow these steps to integrate Halliday in just a few minutes.
+
+<Steps>
+<Step title="Obtain API Keys">
+<Note>
+To get set up with API access for Halliday, get a free API key at [dashboard.halliday.xyz](https://dashboard.halliday.xyz/).
+</Note>
+</Step>
+
+<Step title="Integrate">
+
+First, install the Halliday JS SDK into a web project.
+
+<Tabs>
+  <Tab title="npm">
+    ```shell copy
+    npm install @halliday-sdk/payments
+    ```
+  </Tab>
+  <Tab title="yarn">
+    ```shell copy
+    yarn add @halliday-sdk/payments
+    ```
+  </Tab>
+  <Tab title="HTML">
+    ```html copy
+    <script src="https://cdn.jsdelivr.net/npm/@halliday-sdk/payments@latest/dist/paymentsWidget/index.umd.min.js"></script>
+    ```
+  </Tab>
+</Tabs>
+
+Next, integrate Halliday into an existing application with a few lines of code. This example is in a React.js project with [Wagmi](https://wagmi.sh/).
+
+<Tabs>
+  <Tab title="React">
+    ```tsx copy
+    import { useEffect } from "react";
+    import { createRoot } from "react-dom/client";
+    import { WagmiProvider, useAccount, useDisconnect, useWalletClient } from "wagmi";
+    import { mainnet, base } from "wagmi/chains";
+    import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+    import { RainbowKitProvider, getDefaultConfig, useConnectModal, useAccountModal } from "@rainbow-me/rainbowkit";
+    import "@rainbow-me/rainbowkit/styles.css";
+    import { HallidayPaymentsProvider, useHallidayPayments } from "@halliday-sdk/payments/react";
+    import { connectWalletClient } from "@halliday-sdk/payments/viem";
+
+    const wagmiConfig = getDefaultConfig({
+      appName: "My App",
+      projectId: PROJECT_ID,
+      chains: [ mainnet, base ],
+    });
+
+    const queryClient = new QueryClient();
+
+    function App() {
+      const { openDeposit, updateWallets, isReady } = useHallidayPayments();
+      const { address } = useAccount();
+      const { data: walletClient } = useWalletClient({ assertChainId: false });
+      const { openConnectModal } = useConnectModal();
+      const { openAccountModal } = useAccountModal();
+      const { disconnect } = useDisconnect();
+
+      const owner = connectWalletClient(() => walletClient);
+      const enabled = isReady && !!walletClient;
+
+      useEffect(() => {
+        updateWallets({
+          owner,
+          deposit: { funders: [], destinationAddress: address },
+        });
+      }, [enabled, walletClient, address]);
+
+      return (
+        <div>
+          <button onClick={address ? (openAccountModal ?? (() => disconnect())) : openConnectModal}>
+            {address ? "Disconnect" : "Connect wallet"}
+          </button>
+          <button disabled={!enabled} onClick={openDeposit}>
+            Deposit with Halliday
+          </button>
+        </div>
+      );
+    }
+
+    createRoot(document.getElementById("root")).render(
+      <WagmiProvider config={ wagmiConfig }>
+        <QueryClientProvider client={ queryClient }>
+          <RainbowKitProvider>
+            <HallidayPaymentsProvider
+              apiKey="HALLIDAY_API_KEY"
+              deposit={{ outputs: [ "base:0x833589fcd6edb6e08f4c7c32d4f71b54bda02913" ] }}>
+              <App />
+            </HallidayPaymentsProvider>
+          </RainbowKitProvider>
+        </QueryClientProvider>
+      </WagmiProvider>
+    );
+    ```
+  </Tab>
+  <Tab title="HTML">
+    ```html copy
+    <html>
+    <body>
+      <button id="connect-wallet">Connect Wallet</button>
+    </body>
+    <script src="https://cdn.jsdelivr.net/npm/@halliday-sdk/payments@latest/dist/paymentsWidget/index.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@halliday-sdk/payments@latest/dist/paymentsWidget/ethers/index.umd.min.js"></script>
+    <script>
+      window.connectSigner = window.ethers.connectSigner;
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/ethers@6/dist/ethers.umd.min.js"></script>
+    <script>
+      const { HallidayPayments } = hallidayPayments;
+      document.getElementById('connect-wallet').addEventListener('click', async () => {
+        window.ethereum = window.ethereum || window.phantom.ethereum;
+        const [address] = await window.ethereum.request({ method: 'eth_requestAccounts' });
+
+        const owner = connectSigner(() =>
+          new ethers.BrowserProvider(window.ethereum).getSigner(),
+        );
+
+        const halliday = new HallidayPayments({
+          apiKey: HALLIDAY_PUBLIC_API_KEY,
+          owner,
+          deposit: {
+            // USDC on Base
+            outputs: ['base:0x833589fcd6edb6e08f4c7c32d4f71b54bda02913'],
+            destinationAddress: address,
+          }
+        });
+
+        halliday.openDeposit();
+      });
+    </script>
+    </html>
+    ```
+  </Tab>
+</Tabs>
+
+Run the app page and try onramping or swapping tokens with the newly implemented Halliday Payments Widget. Try it now using the **button** above.
+
+</Step>
+</Steps>

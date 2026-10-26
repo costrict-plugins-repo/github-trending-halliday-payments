@@ -1,0 +1,94 @@
+---
+title: AI Plugins and LLMs.txt
+sidebarTitle: llms.txt & Plugins
+public: true
+---
+
+## Halliday Claude Code Plugin
+
+For users developing with [Claude Code](https://claude.com/product/claude-code), Halliday now has an official plugin available to automate tedious tasks of development.
+
+The `/halliday` command with a guided menu of flows:
+- **Ask questions and learn** — Answers backed by a bundled reference library of the official documentation pages, SDKs, and live Halliday API lookups.
+- **Clone a sample application** — Pick from several example open source repos and walk through setup end-to-end.
+- **Check my integration** — Scan your codebase against an integration checklist and flag only the items that could cause issues with the Halliday integration.
+- **Look up a payment** — Fetch a payment by ID, show a clear status summary with explanation, and give status-specific next steps.
+
+The Halliday Claude Code plugin is now available in the [Anthropic community marketplace](https://github.com/anthropics/claude-plugins-community). After installing Claude Code on the command line, add the plugin using the Anthropic community marketplace:
+
+```
+## official community marketplace
+claude plugin marketplace add anthropics/claude-plugins-community
+
+## OR from our marketplace, version updated more frequently
+claude plugin marketplace add halliday
+
+claude plugin install halliday-payments
+```
+
+If already installed, update the plugin with this command:
+```
+## From a shell
+claude plugin update halliday-payments@claude-community
+## OR
+claude plugin update halliday-payments@halliday
+
+## From within the Claude Code CLI
+/plugin update halliday-payments@claude-community
+## OR
+/plugin update halliday-payments@halliday
+```
+
+To work on a personalized fork, the plugin can be utilized in development mode using git and these commands:
+
+```
+git clone https://github.com/HallidayInc/HallidayClaudePlugin.git
+claude --plugin-dir ./HallidayClaudePlugin
+
+## Once in Claude Code, use this command to open the Halliday Claude Code plugin:
+/halliday
+```
+
+The Halliday Claude Code plugin is [open source on GitHub](https://github.com/HallidayInc/HallidayClaudePlugin/).
+
+## Halliday Codex Plugin
+
+For users developing with [Codex](https://openai.com/codex/), Halliday also has an official plugin available to automate tedious tasks of development.
+
+The `halliday` skill with a guided menu of flows:
+- **Ask questions and learn** — Answers backed by a bundled reference library of the official documentation pages, SDKs, and live Halliday API lookups.
+- **Clone a sample application** — Pick from several example open source repos and walk through setup end-to-end.
+- **Check my integration** — Scan your codebase against an integration checklist and flag only the items that could cause issues with the Halliday integration.
+- **Look up a payment** — Fetch a payment by ID, show a clear status summary with explanation, and give status-specific next steps.
+
+The Halliday Codex plugin repository is itself a Codex plugin marketplace, so no clone is needed. After installing Codex on the command line, add the marketplace and install the plugin:
+
+```
+codex plugin marketplace add HallidayInc/HallidayCodexPlugin
+codex plugin add halliday-payments@halliday
+```
+
+Start a new `codex` session to pick up the skill, then invoke it with `$halliday` or just ask a Halliday question:
+
+```
+## Once in Codex, use this command to open the Halliday Codex plugin:
+$halliday
+```
+
+To update to the latest version, run these commands and then start a new session:
+
+```
+codex plugin marketplace upgrade
+codex plugin add halliday-payments@halliday
+```
+
+The Halliday Codex plugin is [open source on GitHub](https://github.com/HallidayInc/HallidayCodexPlugin/).
+
+## Export of the Documentation for LLMs
+
+The llms.txt of the documentation can be crawled from here:
+https://docs.halliday.xyz/llms.txt
+
+Additionally, a full export of all docs pages as markdown can be found here: https://docs.halliday.xyz/llms-full.txt
+
+The API specification `openapi.json` is here: https://v2.prod.halliday.xyz/api.
